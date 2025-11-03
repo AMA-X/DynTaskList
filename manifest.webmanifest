@@ -1,0 +1,16 @@
+{
+  "name": "Dynamic Task Board",
+  "short_name": "Task Board",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1220",
+  "theme_color": "#171a2b",
+  "description": "Backlog and weekly task planner with drag-and-drop and offline support.",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
+
+

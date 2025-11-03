@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#171a2b">
+  <title>Dynamic Task Board</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Dynamic Task Board</h1>
+    <div class="week-controls">
+      <button id="prevWeekBtn" aria-label="Previous week">⟨</button>
+      <div class="week-label">
+        <span id="weekTitle">Week 1</span>
+        <span id="weekDateRange" class="muted"></span>
+      </div>
+      <button id="nextWeekBtn" aria-label="Next week">⟩</button>
+      <input id="jumpToDate" type="date" title="Jump to date" />
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="backlog">
+      <h2>Backlog</h2>
+      <form id="addTaskForm" autocomplete="off">
+        <input id="taskTitleInput" type="text" placeholder="Task title" required />
+        <select id="taskStatusInput">
+          <option value="open">open</option>
+          <option value="ongoing">ongoing</option>
+          <option value="closed">closed</option>
+        </select>
+        <button type="submit">Add</button>
+      </form>
+      <div id="backlogList" class="task-list" data-dropzone="backlog"></div>
+    </section>
+
+    <section id="weeksContainer" class="weeks">
+      <!-- Four week rows injected by JS -->
+    </section>
+  </main>
+
+  <template id="taskCardTemplate">
+    <article class="task-card" draggable="true">
+      <div class="task-header">
+        <span class="task-title"></span>
+        <button class="delete-btn" title="Delete">✕</button>
+      </div>
+      <div class="task-footer">
+        <select class="priority-select" title="Priority (1 highest)">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <select class="status-select">
+          <option value="open">open</option>
+          <option value="ongoing">ongoing</option>
+          <option value="closed">closed</option>
+        </select>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
+
+

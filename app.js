@@ -197,33 +197,22 @@
     const container = weeksContainerEl;
     if (!container || container.children.length === 0) return;
     
-    const containerTop = container.scrollTop;
-    const viewportTop = containerTop;
+    const containerRect = container.getBoundingClientRect();
+    const containerTop = containerRect.top;
     
-    // Find the first week that is visible at the top
+    // Find the week that is closest to the top of the container
     let topWeek = null;
-    let topWeekDistance = Infinity;
+    let minDistance = Infinity;
     
     for (const weekRow of container.children) {
-      const weekTop = weekRow.offsetTop;
-      const distance = Math.abs(viewportTop - weekTop);
+      const rect = weekRow.getBoundingClientRect();
+      const weekTop = rect.top;
+      const distance = Math.abs(weekTop - containerTop);
       
-      // Check if this week is at or near the top
-      if (weekTop <= viewportTop + 50 && distance < topWeekDistance) {
-        topWeekDistance = distance;
+      // Check if this week is visible and closest to the top
+      if (weekTop <= containerTop + 100 && distance < minDistance) {
+        minDistance = distance;
         topWeek = weekRow;
-      }
-    }
-    
-    // If no week found, use the first visible week
-    if (!topWeek && container.children.length > 0) {
-      for (const weekRow of container.children) {
-        const rect = weekRow.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        if (rect.top <= containerRect.top + 100) {
-          topWeek = weekRow;
-          break;
-        }
       }
     }
     

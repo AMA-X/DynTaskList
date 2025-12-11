@@ -279,42 +279,16 @@
     }
     
     if (topWeek) {
-      // Read the week number directly from the week's header text
-      const weekHeader = topWeek.querySelector('.week-row-head');
-      if (weekHeader) {
-        const weekTitle = weekHeader.querySelector('.w-title');
-        if (weekTitle) {
-          // Extract week number from text like "Week 52"
-          const weekMatch = weekTitle.textContent.match(/Week\s+(\d+)/);
-          if (weekMatch) {
-            // Get the week start date from the data attribute
-            const weekStartStr = topWeek.getAttribute('data-week-start');
-            if (weekStartStr) {
-              const newWeekStart = parseDate(weekStartStr);
-              // Verify this is actually a Monday
-              const dayOfWeek = newWeekStart.getDay();
-              if (dayOfWeek === 1) { // Monday
-                if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-                  currentWeekStart = newWeekStart;
-                  renderWeekHeader();
-                }
-              }
-            }
-          }
-        }
-      } else {
-        // Fallback to data attribute method
-        const weekStartStr = topWeek.getAttribute('data-week-start');
-        if (weekStartStr) {
-          const newWeekStart = parseDate(weekStartStr);
-          // Verify this is actually a Monday
-          const dayOfWeek = newWeekStart.getDay();
-          if (dayOfWeek === 1) { // Monday
-            if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-              currentWeekStart = newWeekStart;
-              renderWeekHeader();
-            }
-          }
+      const weekStartStr = topWeek.getAttribute('data-week-start');
+      if (weekStartStr) {
+        const newWeekStart = parseDate(weekStartStr);
+        // Ensure it's a Monday (should already be, but verify)
+        const dayOfWeek = newWeekStart.getDay();
+        const correctedWeekStart = dayOfWeek === 1 ? newWeekStart : startOfISOWeek(newWeekStart);
+        
+        if (correctedWeekStart.getTime() !== currentWeekStart.getTime()) {
+          currentWeekStart = correctedWeekStart;
+          renderWeekHeader();
         }
       }
     }

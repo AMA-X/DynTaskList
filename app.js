@@ -395,10 +395,13 @@
     jumpToDateEl.addEventListener('change', () => {
       const d = parseDate(jumpToDateEl.value);
       if (!isNaN(d)) {
+        // Ensure we start on Monday of the week containing the selected date
         currentWeekStart = startOfISOWeek(d);
         renderWeekHeader();
         renderWeeks();
         renderTasks();
+        // Ensure scroll listener is active after render
+        isInitialScroll = false;
       }
     });
 

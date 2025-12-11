@@ -193,6 +193,52 @@
     }, 100);
   }
   
+  function updateCurrentWeekFromScroll() {
+    const container = weeksContainerEl;
+    if (!container || container.children.length === 0) return;
+    
+    const containerTop = container.scrollTop;
+    const viewportTop = containerTop;
+    
+    // Find the first week that is visible at the top
+    let topWeek = null;
+    let topWeekDistance = Infinity;
+    
+    for (const weekRow of container.children) {
+      const weekTop = weekRow.offsetTop;
+      const distance = Math.abs(viewportTop - weekTop);
+      
+      // Check if this week is at or near the top
+      if (weekTop <= viewportTop + 50 && distance < topWeekDistance) {
+        topWeekDistance = distance;
+        topWeek = weekRow;
+      }
+    }
+    
+    // If no week found, use the first visible week
+    if (!topWeek && container.children.length > 0) {
+      for (const weekRow of container.children) {
+        const rect = weekRow.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        if (rect.top <= containerRect.top + 100) {
+          topWeek = weekRow;
+          break;
+        }
+      }
+    }
+    
+    if (topWeek) {
+      const weekStartStr = topWeek.getAttribute('data-week-start');
+      if (weekStartStr) {
+        const newWeekStart = parseDate(weekStartStr);
+        if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+          currentWeekStart = newWeekStart;
+          renderWeekHeader();
+        }
+      }
+    }
+  }
+  
 
   function renderTasks() {
     // Clear lists

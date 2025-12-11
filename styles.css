@@ -73,6 +73,7 @@ button:hover { border-color: var(--accent); }
   height: calc(100vh - 80px);
   align-items: start;
   margin-top: 80px;
+  padding-top: 0;
   overflow: hidden;
 }
 
@@ -80,7 +81,7 @@ button:hover { border-color: var(--accent); }
   background: rgba(23,26,43,0.66);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px 12px 12px 12px;
 }
 .week { background: transparent; border: 0; }
 .backlog { 

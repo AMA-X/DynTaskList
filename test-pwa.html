@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PWA Test</title>
+</head>
+<body>
+  <h1>PWA Installation Test</h1>
+  <p>Öppna Developer Tools (F12) och kolla Console för felmeddelanden.</p>
+  <script>
+    // Testa om manifestet laddas
+    fetch('./manifest.webmanifest')
+      .then(r => r.json())
+      .then(manifest => {
+        console.log('✓ Manifest laddat:', manifest);
+        console.log('Icons:', manifest.icons);
+      })
+      .catch(e => console.error('✗ Manifest fel:', e));
+    
+    // Testa service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration()
+        .then(reg => {
+          if (reg) {
+            console.log('✓ Service Worker registrerad:', reg.scope);
+          } else {
+            console.log('⚠ Service Worker inte registrerad än');
+          }
+        });
+    }
+    
+    // Testa om appen är installable
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('✓ PWA kan installeras!');
+      deferredPrompt = e;
+      e.preventDefault();
+    });
+    
+    // Visa install-knapp om tillgänglig
+    setTimeout(() => {
+      if (deferredPrompt) {
+        const btn = document.createElement('button');
+        btn.textContent = 'Installera App';
+        btn.onclick = () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            console.log('Användaren valde:', choiceResult.outcome);
+            deferredPrompt = null;
+          });
+        };
+        document.body.appendChild(btn);
+      } else {
+        console.log('⚠ beforeinstallprompt hände inte - kontrollera manifest och service worker');
+      }
+    }, 2000);
+  </script>
+</body>
+</html>
+

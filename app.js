@@ -180,6 +180,7 @@
 
       row.appendChild(head);
       row.appendChild(grid);
+      row.setAttribute('data-week-start', fmtDate(weekStart));
       weeksContainerEl.appendChild(row);
     }
     
@@ -187,9 +188,44 @@
     setTimeout(() => {
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
-        currentWeekRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const headerHeight = 80; // Approximate header height
+        const scrollPosition = currentWeekRow.offsetTop - headerHeight - 16;
+        weeksContainerEl.scrollTop = scrollPosition;
       }
     }, 100);
+  }
+  
+  function updateCurrentWeekFromScroll() {
+    const container = weeksContainerEl;
+    const containerTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const viewportCenter = containerTop + containerHeight / 2;
+    
+    let closestWeek = null;
+    let closestDistance = Infinity;
+    
+    for (const weekRow of container.children) {
+      const weekTop = weekRow.offsetTop;
+      const weekHeight = weekRow.offsetHeight;
+      const weekCenter = weekTop + weekHeight / 2;
+      const distance = Math.abs(viewportCenter - weekCenter);
+      
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestWeek = weekRow;
+      }
+    }
+    
+    if (closestWeek) {
+      const weekStartStr = closestWeek.getAttribute('data-week-start');
+      if (weekStartStr) {
+        const newWeekStart = parseDate(weekStartStr);
+        if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+          currentWeekStart = newWeekStart;
+          renderWeekHeader();
+        }
+      }
+    }
   }
 
   function renderTasks() {
@@ -323,6 +359,15 @@
     });
 
     ensureDnD(backlogListEl);
+    
+    // Update current week when scrolling
+    let scrollTimeout;
+    weeksContainerEl.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        updateCurrentWeekFromScroll();
+      }, 100);
+    });
   }
 
   // Init

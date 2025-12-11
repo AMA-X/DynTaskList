@@ -199,40 +199,46 @@
     
     const containerRect = container.getBoundingClientRect();
     const containerTop = containerRect.top;
+    const scrollTop = container.scrollTop;
     
-    // Find the week that is currently at the top of the visible area
-    // We want the week whose top edge is closest to the container top
+    // Find the week that is currently at the top of the scrollable area
+    // Use scrollTop to find which week's offsetTop matches the scroll position
     let topWeek = null;
-    let closestTop = Infinity;
+    let minDistance = Infinity;
+    
+    for (const weekRow of container.children) {
+      // Get the week's position relative to the container
+      const weekOffsetTop = weekRow.offsetTop;
+      const distance = Math.abs(scrollTop - weekOffsetTop);
+      
+      // Find the week closest to the current scroll position
+      if (distance < minDistance) {
+        minDistance = distance;
+        topWeek = weekRow;
+      }
+    }
+    
+    // Also check which week is visually at the top using getBoundingClientRect
+    let visualTopWeek = null;
+    let visualMinDistance = Infinity;
     
     for (const weekRow of container.children) {
       const rect = weekRow.getBoundingClientRect();
       const weekTop = rect.top;
+      const distance = Math.abs(weekTop - containerTop);
       
-      // Only consider weeks that are visible (their top is at or above container top)
-      if (weekTop <= containerTop + 5) {
-        // Find the week with the top edge closest to container top
-        const distance = containerTop - weekTop;
-        if (distance >= 0 && distance < closestTop) {
-          closestTop = distance;
-          topWeek = weekRow;
-        }
+      // Find the week visually closest to the container top
+      if (weekTop <= containerTop + 10 && distance < visualMinDistance) {
+        visualMinDistance = distance;
+        visualTopWeek = weekRow;
       }
     }
     
-    // If no week found with top at or above container top, use the first visible week
-    if (!topWeek) {
-      for (const weekRow of container.children) {
-        const rect = weekRow.getBoundingClientRect();
-        if (rect.top <= containerTop + 100) {
-          topWeek = weekRow;
-          break;
-        }
-      }
-    }
+    // Prefer the visually top week if it's close, otherwise use scroll-based
+    const selectedWeek = visualTopWeek || topWeek;
     
-    if (topWeek) {
-      const weekStartStr = topWeek.getAttribute('data-week-start');
+    if (selectedWeek) {
+      const weekStartStr = selectedWeek.getAttribute('data-week-start');
       if (weekStartStr) {
         const newWeekStart = parseDate(weekStartStr);
         if (newWeekStart.getTime() !== currentWeekStart.getTime()) {

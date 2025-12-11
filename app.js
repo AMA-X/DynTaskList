@@ -190,21 +190,18 @@
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
         // Temporarily disable scroll updates during initial scroll
-        let scrollListenerActive = false;
-        const originalScrollHandler = weeksContainerEl.onscroll;
-        
-        // Disable scroll listener temporarily
-        weeksContainerEl.removeEventListener('scroll', weeksContainerEl._scrollHandler);
+        if (weeksContainerEl._scrollHandler) {
+          weeksContainerEl.removeEventListener('scroll', weeksContainerEl._scrollHandler);
+        }
         
         currentWeekRow.scrollIntoView({ behavior: 'auto', block: 'start' });
         
         // Re-enable scroll listener after scroll completes
+        // Don't call updateCurrentWeekFromScroll() here - we already have the correct week
         setTimeout(() => {
           if (weeksContainerEl._scrollHandler) {
             weeksContainerEl.addEventListener('scroll', weeksContainerEl._scrollHandler);
           }
-          // Update header once after initial scroll
-          updateCurrentWeekFromScroll();
         }, 250);
       }
     }, 100);

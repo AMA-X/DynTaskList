@@ -146,7 +146,14 @@ button:hover { border-color: var(--accent); }
 
 #addTaskForm button { width: 100%; }
 
-.task-list { display: flex; flex-direction: column; gap: 8px; min-height: 80px; flex: 1; }
+.task-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  min-height: 80px; 
+  flex: 1;
+  overflow-y: auto;
+}
 
 .weeks {
   display: flex;

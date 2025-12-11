@@ -46,9 +46,13 @@ html.standalone body {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, var(--bg-elev), rgba(23,26,43,0.6));
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 10;
+  height: 80px;
+  box-sizing: border-box;
 }
 .app-header h1 { margin: 0; font-size: 20px; }
 
@@ -69,7 +73,7 @@ button:hover { border-color: var(--accent); }
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 8px;
-  padding: 0 16px 16px 16px;
+  padding: 16px;
   height: calc(100vh - 80px);
   align-items: start;
   margin-top: 80px;
@@ -84,7 +88,7 @@ button:hover { border-color: var(--accent); }
 }
 
 .backlog {
-  padding-top: 0;
+  padding-top: 16px;
 }
 .week { background: transparent; border: 0; }
 .backlog { 
@@ -97,7 +101,7 @@ button:hover { border-color: var(--accent); }
 }
 
 .backlog h2 { 
-  margin: 0 0 8px 0; 
+  margin: 0 0 12px 0; 
   font-size: 16px;
 }
 

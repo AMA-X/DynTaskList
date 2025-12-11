@@ -184,13 +184,17 @@
       weeksContainerEl.appendChild(row);
     }
     
-    // Scroll to current week (week 26 in the rendered weeks)
+    // Scroll to current week (week 26 in the rendered weeks) with snap
     setTimeout(() => {
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
         const headerHeight = 80; // Approximate header height
         const scrollPosition = currentWeekRow.offsetTop - headerHeight - 16;
         weeksContainerEl.scrollTop = scrollPosition;
+        // Force snap after scroll
+        setTimeout(() => {
+          currentWeekRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
       }
     }, 100);
   }

@@ -69,7 +69,7 @@ button:hover { border-color: var(--accent); }
 
 .layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 16px;
   padding: 16px;
   min-height: 100vh;
@@ -141,6 +141,7 @@ button:hover { border-color: var(--accent); }
   padding-right: 8px;
   padding-top: 16px;
   scroll-padding-top: 16px;
+  scroll-snap-type: y mandatory;
 }
 
 .weeks::-webkit-scrollbar {
@@ -160,8 +161,24 @@ button:hover { border-color: var(--accent); }
 .weeks::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
-.week { display: flex; flex-direction: column; }
-.week-row-head { display: flex; align-items: baseline; gap: 8px; padding: 6px 4px; color: var(--muted); }
+.week { 
+  display: flex; 
+  flex-direction: column;
+  scroll-snap-align: start;
+  scroll-margin-top: 16px;
+}
+.week-row-head { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 8px; 
+  padding: 6px 4px; 
+  color: var(--muted);
+  position: sticky;
+  top: 0;
+  background: rgba(15, 18, 32, 0.95);
+  z-index: 1;
+  margin-bottom: 4px;
+}
 .week-row-head .w-title { color: var(--text); font-weight: 600; }
 .week-grid {
   display: grid;

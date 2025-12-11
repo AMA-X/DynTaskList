@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Dynamic Task Board PWA",
   "scripts": {
-    "generate-icons": "node generate-icons.js"
+    "generate-icons": "node generate-icons.js",
+    "start": "npx http-server -p 8080 -c-1",
+    "serve": "npx http-server -p 8080 -c-1"
   },
   "devDependencies": {
     "sharp": "^0.33.0"

@@ -87,9 +87,6 @@ button:hover { border-color: var(--accent); }
   padding: 16px;
 }
 
-.backlog {
-  padding-top: 16px;
-}
 .week { background: transparent; border: 0; }
 .backlog { 
   display: flex; 
@@ -97,7 +94,7 @@ button:hover { border-color: var(--accent); }
   position: relative;
   height: 100%;
   overflow: hidden;
-  margin-top: 0;
+  padding-top: 16px;
 }
 
 .backlog h2 { 

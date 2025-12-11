@@ -253,8 +253,8 @@
   }
 
   // Actions
-  function addTask(title, status, priority = 3) {
-    const task = { id: uid(), title, status, priority: parseInt(priority, 10), assignedDate: null };
+  function addTask(title, priority = 3) {
+    const task = { id: uid(), title, status: 'open', priority: parseInt(priority, 10), assignedDate: null };
     state.tasks.push(task);
     save();
     renderTasks();
@@ -280,10 +280,9 @@
     byId('addTaskForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const title = byId('taskTitleInput').value.trim();
-      const status = byId('taskStatusInput').value;
       const priority = byId('taskPriorityInput').value;
       if (!title) return;
-      addTask(title, status, priority);
+      addTask(title, priority);
       byId('taskTitleInput').value = '';
       byId('taskTitleInput').focus();
     });

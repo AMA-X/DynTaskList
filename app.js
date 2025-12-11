@@ -191,6 +191,10 @@
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
         currentWeekRow.scrollIntoView({ behavior: 'auto', block: 'start' });
+        // Update header after scroll is complete
+        setTimeout(() => {
+          updateCurrentWeekFromScroll();
+        }, 150);
       }
     }, 100);
   }

@@ -92,7 +92,7 @@
     const last = addDays(addWeeks(first, 3), 6);
     const wStart = getISOWeek(first);
     const wEnd = getISOWeek(addWeeks(first, 3));
-    weekTitleEl.textContent = `Weeks ${wStart}–${wEnd}`;
+    weekTitleEl.textContent = `Week ${wStart}`;
     const fmt = (d) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     weekDateRangeEl.textContent = `${fmt(first)} – ${fmt(last)}`;
     // Do not override the user's chosen date in the jump picker here.
@@ -148,8 +148,13 @@
 
   function renderWeeks() {
     weeksContainerEl.innerHTML = '';
-    for (let w = 0; w < 4; w++) {
-      const weekStart = addWeeks(currentWeekStart, w);
+    // Render 52 weeks total: 26 weeks back and 26 weeks forward from current week
+    const weeksToRender = 52;
+    const weeksBack = 26;
+    const startWeek = addWeeks(currentWeekStart, -weeksBack);
+    
+    for (let w = 0; w < weeksToRender; w++) {
+      const weekStart = addWeeks(startWeek, w);
       const weekEnd = addDays(weekStart, 6);
       const row = document.createElement('div');
       row.className = 'week';
@@ -177,6 +182,14 @@
       row.appendChild(grid);
       weeksContainerEl.appendChild(row);
     }
+    
+    // Scroll to current week (week 26 in the rendered weeks)
+    setTimeout(() => {
+      const currentWeekRow = weeksContainerEl.children[weeksBack];
+      if (currentWeekRow) {
+        currentWeekRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   }
 
   function renderTasks() {
@@ -288,13 +301,13 @@
     });
 
     byId('prevWeekBtn').addEventListener('click', () => {
-      currentWeekStart = addWeeks(currentWeekStart, -4);
+      currentWeekStart = addWeeks(currentWeekStart, -1);
       renderWeekHeader();
       renderWeeks();
       renderTasks();
     });
     byId('nextWeekBtn').addEventListener('click', () => {
-      currentWeekStart = addWeeks(currentWeekStart, 4);
+      currentWeekStart = addWeeks(currentWeekStart, 1);
       renderWeekHeader();
       renderWeeks();
       renderTasks();

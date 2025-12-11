@@ -199,36 +199,42 @@
     const container = weeksContainerEl;
     if (!container || container.children.length === 0) return;
     
-    const scrollTop = container.scrollTop;
+    const containerRect = container.getBoundingClientRect();
+    const containerTop = containerRect.top;
     
-    // With scroll-snap, find the week that is currently at the top
-    // Strategy: Find the first week whose offsetTop is >= scrollTop
-    // This should be the week that is actually visible at the top
+    // Find the week that is actually visible at the top of the container
+    // Use visual position (getBoundingClientRect) to find the week whose top edge
+    // is closest to the container top and is actually visible
     
     let topWeek = null;
+    let closestDistance = Infinity;
     
-    // Find the first week that starts at or after the scroll position
-    // This is the week that is actually visible at the top
+    // Find the week whose top edge is closest to container top
+    // and is actually visible (its top is at or below container top)
     for (const weekRow of container.children) {
-      const weekOffsetTop = weekRow.offsetTop;
+      const rect = weekRow.getBoundingClientRect();
+      const weekTop = rect.top;
       
-      // The week at the top should have its offsetTop >= scrollTop (or very close)
-      // We want the first week that starts at or just above the scroll position
-      if (weekOffsetTop >= scrollTop - 10) {
-        topWeek = weekRow;
-        break;
+      // Only consider weeks that are visible (their top is at or below container top)
+      // We want the week whose top edge is closest to container top
+      if (weekTop >= containerTop - 2) {
+        const distance = weekTop - containerTop;
+        // Find the week with the smallest positive distance (closest to top)
+        if (distance >= 0 && distance < closestDistance) {
+          closestDistance = distance;
+          topWeek = weekRow;
+        }
       }
     }
     
-    // If no week found (shouldn't happen), find the closest one
+    // If no week found with top at or below container top, find the first visible one
     if (!topWeek) {
-      let minDistance = Infinity;
       for (const weekRow of container.children) {
-        const weekOffsetTop = weekRow.offsetTop;
-        const distance = Math.abs(scrollTop - weekOffsetTop);
-        if (distance < minDistance) {
-          minDistance = distance;
+        const rect = weekRow.getBoundingClientRect();
+        // Find the first week that is actually visible
+        if (rect.top <= containerTop + 30 && rect.bottom > containerTop) {
           topWeek = weekRow;
+          break;
         }
       }
     }

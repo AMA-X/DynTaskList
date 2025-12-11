@@ -218,8 +218,8 @@
     const containerTop = containerRect.top;
     
     // Find the week that is actually visible at the top
-    // Strategy: Find the first week whose top edge is at or below container top
-    // and has a significant portion visible (not just a tiny bit)
+    // Strategy: Read the week number directly from the visible week's header
+    // This is more reliable than trying to calculate from scroll position
     
     let topWeek = null;
     let closestDistance = Infinity;
@@ -260,12 +260,35 @@
     }
     
     if (topWeek) {
-      const weekStartStr = topWeek.getAttribute('data-week-start');
-      if (weekStartStr) {
-        const newWeekStart = parseDate(weekStartStr);
-        if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-          currentWeekStart = newWeekStart;
-          renderWeekHeader();
+      // Read the week number directly from the week's header text
+      const weekHeader = topWeek.querySelector('.week-row-head');
+      if (weekHeader) {
+        const weekTitle = weekHeader.querySelector('.w-title');
+        if (weekTitle) {
+          // Extract week number from text like "Week 52"
+          const weekMatch = weekTitle.textContent.match(/Week\s+(\d+)/);
+          if (weekMatch) {
+            const weekNum = parseInt(weekMatch[1], 10);
+            // Get the week start date from the data attribute
+            const weekStartStr = topWeek.getAttribute('data-week-start');
+            if (weekStartStr) {
+              const newWeekStart = parseDate(weekStartStr);
+              if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+                currentWeekStart = newWeekStart;
+                renderWeekHeader();
+              }
+            }
+          }
+        }
+      } else {
+        // Fallback to data attribute method
+        const weekStartStr = topWeek.getAttribute('data-week-start');
+        if (weekStartStr) {
+          const newWeekStart = parseDate(weekStartStr);
+          if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+            currentWeekStart = newWeekStart;
+            renderWeekHeader();
+          }
         }
       }
     }

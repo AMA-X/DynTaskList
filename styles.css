@@ -80,7 +80,7 @@ button:hover { border-color: var(--accent); }
   background: rgba(23,26,43,0.66);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px 16px 16px 0;
 }
 .week { background: transparent; border: 0; }
 .backlog { 

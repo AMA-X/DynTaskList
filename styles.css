@@ -82,6 +82,10 @@ button:hover { border-color: var(--accent); }
   border-radius: 12px;
   padding: 16px;
 }
+
+.backlog {
+  padding-top: 0;
+}
 .week { background: transparent; border: 0; }
 .backlog { 
   display: flex; 

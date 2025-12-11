@@ -167,7 +167,12 @@
     const startWeek = addWeeks(currentWeekStart, -weeksBack);
     
     for (let w = 0; w < weeksToRender; w++) {
-      const weekStart = addWeeks(startWeek, w);
+      // Ensure weekStart is Monday (ISO week)
+      let weekStart = addWeeks(startWeek, w);
+      // Verify and correct if needed
+      if (weekStart.getDay() !== 1) {
+        weekStart = startOfISOWeek(weekStart);
+      }
       const weekEnd = addDays(weekStart, 6);
       const row = document.createElement('div');
       row.className = 'week';

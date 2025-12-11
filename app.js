@@ -398,16 +398,95 @@
       renderWeeks();
       renderTasks();
     });
-    jumpToDateEl.addEventListener('change', () => {
-      const d = parseDate(jumpToDateEl.value);
-      if (!isNaN(d)) {
-        // Ensure we start on Monday of the week containing the selected date
-        currentWeekStart = startOfISOWeek(d);
-        renderWeekHeader();
-        renderWeeks();
-        renderTasks();
-        // Ensure scroll listener is active after render
-        isInitialScroll = false;
+
+    // Custom date picker
+    let currentPickerDate = new Date();
+    
+    function renderDatePicker(year, month) {
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const firstMonday = startOfISOWeek(firstDay);
+      const lastMonday = startOfISOWeek(lastDay);
+      
+      datePickerMonthYearEl.textContent = firstDay.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      datePickerDaysEl.innerHTML = '';
+      
+      // Start from Monday of the week containing the first day of the month
+      let currentDate = new Date(firstMonday);
+      const endDate = new Date(lastMonday);
+      endDate.setDate(endDate.getDate() + 6); // Sunday of last week
+      
+      while (currentDate <= endDate) {
+        const day = currentDate.getDate();
+        const isCurrentMonth = currentDate.getMonth() === month;
+        const isToday = fmtDate(currentDate) === fmtDate(new Date());
+        const isSelected = fmtDate(currentDate) === fmtDate(currentPickerDate);
+        
+        const dayEl = document.createElement('div');
+        dayEl.className = 'date-picker-day';
+        if (!isCurrentMonth) dayEl.classList.add('other-month');
+        if (isToday) dayEl.classList.add('today');
+        if (isSelected) dayEl.classList.add('selected');
+        dayEl.textContent = day;
+        dayEl.dataset.date = fmtDate(currentDate);
+        
+        dayEl.addEventListener('click', () => {
+          const selectedDate = parseDate(dayEl.dataset.date);
+          currentPickerDate = selectedDate;
+          currentWeekStart = startOfISOWeek(selectedDate);
+          renderWeekHeader();
+          renderWeeks();
+          renderTasks();
+          datePickerEl.style.display = 'none';
+          isInitialScroll = false;
+        });
+        
+        datePickerDaysEl.appendChild(dayEl);
+        currentDate = addDays(currentDate, 1);
+      }
+    }
+    
+    jumpToDateBtn.addEventListener('click', () => {
+      currentPickerDate = currentWeekStart;
+      const year = currentPickerDate.getFullYear();
+      const month = currentPickerDate.getMonth();
+      renderDatePicker(year, month);
+      datePickerEl.style.display = datePickerEl.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    datePickerPrevMonthBtn.addEventListener('click', () => {
+      const year = currentPickerDate.getFullYear();
+      const month = currentPickerDate.getMonth();
+      currentPickerDate = new Date(year, month - 1, 1);
+      renderDatePicker(year, month - 1);
+    });
+    
+    datePickerNextMonthBtn.addEventListener('click', () => {
+      const year = currentPickerDate.getFullYear();
+      const month = currentPickerDate.getMonth();
+      currentPickerDate = new Date(year, month + 1, 1);
+      renderDatePicker(year, month + 1);
+    });
+    
+    datePickerTodayBtn.addEventListener('click', () => {
+      const today = new Date();
+      currentPickerDate = today;
+      currentWeekStart = startOfISOWeek(today);
+      renderWeekHeader();
+      renderWeeks();
+      renderTasks();
+      datePickerEl.style.display = 'none';
+      isInitialScroll = false;
+    });
+    
+    datePickerClearBtn.addEventListener('click', () => {
+      datePickerEl.style.display = 'none';
+    });
+    
+    // Close date picker when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!datePickerEl.contains(e.target) && e.target !== jumpToDateBtn) {
+        datePickerEl.style.display = 'none';
       }
     });
 

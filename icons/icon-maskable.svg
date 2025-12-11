@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a2140"/>
+      <stop offset="1" stop-color="#0f1220"/>
+    </linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- Full background för maskable icon -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#g)"/>
+  
+  <!-- Safe zone: 10% padding = 51.2px, så safe zone är 409.6x409.6 centrerad -->
+  <g transform="translate(51.2, 51.2)">
+    <rect x="0" y="0" width="409.6" height="409.6" rx="76.8" fill="url(#g)" stroke="#2a2f45" stroke-width="4.8"/>
+    
+    <!-- Emoji - centrerad i safe zone -->
+    <text x="50%" y="45%" text-anchor="middle" dominant-baseline="middle" font-size="176" filter="url(#s)">😅</text>
+    
+    <!-- Title overlay - i safe zone -->
+    <rect x="76.8" y="284.8" width="256" height="64" rx="12.8" fill="rgba(0,0,0,0.35)" />
+    <text x="50%" y="332.8" text-anchor="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="64" fill="#e6e9f0" font-weight="700" letter-spacing="0.8">ToDo</text>
+  </g>
+</svg>
+

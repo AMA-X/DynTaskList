@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const svgPath = path.join(__dirname, 'icons', 'icon.svg');
+const svgMaskablePath = path.join(__dirname, 'icons', 'icon-maskable.svg');
 const outputDir = path.join(__dirname, 'icons');
 
 // Kontrollera att SVG-filen finns
@@ -11,12 +12,14 @@ if (!fs.existsSync(svgPath)) {
   process.exit(1);
 }
 
-async function generateIcon(size) {
-  const outputPath = path.join(outputDir, `icon-${size}.png`);
+async function generateIcon(size, isMaskable = false) {
+  const suffix = isMaskable ? '-maskable' : '';
+  const outputPath = path.join(outputDir, `icon-${size}${suffix}.png`);
+  const svgFile = isMaskable ? svgMaskablePath : svgPath;
   
   try {
     // Läs SVG-filen
-    const svgContent = fs.readFileSync(svgPath, 'utf8');
+    const svgContent = fs.readFileSync(svgFile, 'utf8');
     
     // Skapa HTML som renderar SVG:en med emoji-stöd
     const html = `
@@ -80,7 +83,8 @@ async function generateIcon(size) {
     
     await browser.close();
     
-    console.log(`✓ Genererade icon-${size}.png (${size}x${size})`);
+    const iconName = isMaskable ? `icon-${size}-maskable.png` : `icon-${size}.png`;
+    console.log(`✓ Genererade ${iconName} (${size}x${size})`);
     return true;
   } catch (error) {
     console.error(`✗ Fel vid generering av icon-${size}.png:`, error.message);
@@ -92,8 +96,19 @@ async function main() {
   console.log('Genererar PNG-ikoner från SVG...\n');
   
   const sizes = [192, 512];
-  const results = await Promise.all(sizes.map(size => generateIcon(size)));
+  const tasks = [];
   
+  // Generera vanliga ikoner
+  for (const size of sizes) {
+    tasks.push(generateIcon(size, false));
+  }
+  
+  // Generera maskable ikoner
+  for (const size of sizes) {
+    tasks.push(generateIcon(size, true));
+  }
+  
+  const results = await Promise.all(tasks);
   const allSuccess = results.every(r => r === true);
   
   if (allSuccess) {

@@ -80,7 +80,7 @@ button:hover { border-color: var(--accent); }
   background: rgba(23,26,43,0.66);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px 16px 16px 0;
+  padding: 16px;
 }
 .week { background: transparent; border: 0; }
 .backlog { 
@@ -89,6 +89,7 @@ button:hover { border-color: var(--accent); }
   position: relative;
   height: 100%;
   overflow: hidden;
+  margin-top: 0;
 }
 
 .backlog h2 { 
@@ -183,6 +184,7 @@ button:hover { border-color: var(--accent); }
   padding-right: 8px;
   scroll-snap-type: y mandatory;
   scroll-padding-top: 0;
+  margin-top: 0;
 }
 
 .weeks::-webkit-scrollbar {

@@ -27,10 +27,6 @@ body {
     url('SpaceX.jpg') center / cover no-repeat fixed;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  position: fixed;
-  width: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* För standalone-läge */
@@ -72,8 +68,9 @@ button:hover { border-color: var(--accent); }
   grid-template-columns: 280px 1fr;
   gap: 16px;
   padding: 16px;
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   align-items: start;
+  margin-top: 80px;
 }
 
 .backlog, .week {
@@ -87,17 +84,11 @@ button:hover { border-color: var(--accent); }
   display: flex; 
   flex-direction: column; 
   position: relative;
-  padding-top: 16px;
 }
 
 .backlog h2 { 
-  margin: 0 0 12px 0; 
+  margin: 4px 0 12px 0; 
   font-size: 16px;
-  position: sticky;
-  top: 0;
-  background: rgba(23, 26, 43, 0.95);
-  z-index: 1;
-  padding-bottom: 8px;
 }
 
 .add-task-container {
@@ -157,12 +148,8 @@ button:hover { border-color: var(--accent); }
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 80px);
   padding-right: 8px;
-  padding-top: 16px;
-  scroll-padding-top: 16px;
-  scroll-snap-type: y mandatory;
-  margin-top: 16px;
 }
 
 .weeks::-webkit-scrollbar {
@@ -185,8 +172,6 @@ button:hover { border-color: var(--accent); }
 .week { 
   display: flex; 
   flex-direction: column;
-  scroll-snap-align: start;
-  scroll-margin-top: 16px;
 }
 .week-row-head { 
   display: flex; 
@@ -194,11 +179,6 @@ button:hover { border-color: var(--accent); }
   gap: 8px; 
   padding: 6px 4px; 
   color: var(--muted);
-  position: sticky;
-  top: 80px;
-  background: rgba(15, 18, 32, 0.95);
-  z-index: 1;
-  margin-bottom: 4px;
 }
 .week-row-head .w-title { color: var(--text); font-weight: 600; }
 .week-grid {

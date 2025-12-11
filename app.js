@@ -184,53 +184,15 @@
       weeksContainerEl.appendChild(row);
     }
     
-    // Scroll to current week (week 26 in the rendered weeks) with snap
+    // Scroll to current week (week 26 in the rendered weeks)
     setTimeout(() => {
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
-        const headerHeight = 80; // Approximate header height
-        const scrollPosition = currentWeekRow.offsetTop - headerHeight - 16;
-        weeksContainerEl.scrollTop = scrollPosition;
-        // Force snap after scroll
-        setTimeout(() => {
-          currentWeekRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
+        currentWeekRow.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
     }, 100);
   }
   
-  function updateCurrentWeekFromScroll() {
-    const container = weeksContainerEl;
-    const containerTop = container.scrollTop;
-    const containerHeight = container.clientHeight;
-    const viewportCenter = containerTop + containerHeight / 2;
-    
-    let closestWeek = null;
-    let closestDistance = Infinity;
-    
-    for (const weekRow of container.children) {
-      const weekTop = weekRow.offsetTop;
-      const weekHeight = weekRow.offsetHeight;
-      const weekCenter = weekTop + weekHeight / 2;
-      const distance = Math.abs(viewportCenter - weekCenter);
-      
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestWeek = weekRow;
-      }
-    }
-    
-    if (closestWeek) {
-      const weekStartStr = closestWeek.getAttribute('data-week-start');
-      if (weekStartStr) {
-        const newWeekStart = parseDate(weekStartStr);
-        if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-          currentWeekStart = newWeekStart;
-          renderWeekHeader();
-        }
-      }
-    }
-  }
 
   function renderTasks() {
     // Clear lists
@@ -363,15 +325,6 @@
     });
 
     ensureDnD(backlogListEl);
-    
-    // Update current week when scrolling
-    let scrollTimeout;
-    weeksContainerEl.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        updateCurrentWeekFromScroll();
-      }, 100);
-    });
   }
 
   // Init

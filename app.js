@@ -199,30 +199,43 @@
     
     const scrollTop = container.scrollTop;
     
-    // With scroll-snap, the week at the top should have its offsetTop
-    // equal or very close to scrollTop
-    // Find the week whose offsetTop is closest to scrollTop
-    // But prefer weeks that are at or below scrollTop (the snapped week)
+    // With scroll-snap, find the week that is currently visible at the top
+    // Strategy: Find the first week whose top edge is at or just above scrollTop
+    // This should be the snapped week
     
     let topWeek = null;
     let minDistance = Infinity;
-    const tolerance = 10; // Allow small tolerance for scroll-snap
+    const tolerance = 20; // Allow tolerance for scroll-snap rounding
     
+    // First, try to find the week whose offsetTop is closest to scrollTop
+    // and is within tolerance
     for (const weekRow of container.children) {
       const weekOffsetTop = weekRow.offsetTop;
       const distance = Math.abs(scrollTop - weekOffsetTop);
       
-      // Prefer weeks whose top edge is at or just below scrollTop
-      // (this is the snapped week)
-      if (weekOffsetTop >= scrollTop - tolerance && weekOffsetTop <= scrollTop + tolerance) {
-        if (distance < minDistance) {
-          minDistance = distance;
-          topWeek = weekRow;
+      if (distance < minDistance && distance <= tolerance) {
+        minDistance = distance;
+        topWeek = weekRow;
+      }
+    }
+    
+    // If no week found within tolerance, find the first week whose top
+    // is at or just above scrollTop (the visible week at top)
+    if (!topWeek) {
+      for (const weekRow of container.children) {
+        const weekOffsetTop = weekRow.offsetTop;
+        // The week at the top should have its top edge at or just above scrollTop
+        if (weekOffsetTop >= scrollTop - 50 && weekOffsetTop <= scrollTop + 50) {
+          const distance = Math.abs(scrollTop - weekOffsetTop);
+          if (distance < minDistance) {
+            minDistance = distance;
+            topWeek = weekRow;
+          }
         }
       }
     }
     
-    // If no week found in tolerance range, find the closest overall
+    // Fallback: find the closest week overall
     if (!topWeek) {
       for (const weekRow of container.children) {
         const weekOffsetTop = weekRow.offsetTop;

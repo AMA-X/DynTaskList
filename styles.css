@@ -125,7 +125,7 @@ button:hover { border-color: var(--accent); }
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 100px;
+  grid-template-columns: 1fr 60px;
   gap: 12px;
   align-items: end;
 }
@@ -142,6 +142,11 @@ button:hover { border-color: var(--accent); }
   flex-direction: column;
   gap: 6px;
   flex-shrink: 0;
+}
+
+.priority-group select {
+  width: 100%;
+  min-width: 60px;
 }
 
 .field-label {

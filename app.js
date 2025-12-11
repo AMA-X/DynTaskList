@@ -23,9 +23,13 @@
   // Week helpers (ISO week: Monday is 1st day)
   function startOfISOWeek(date) {
     const d = new Date(date);
-    const day = (d.getDay() + 6) % 7; // 0..6, Monday=0
-    d.setDate(d.getDate() - day);
     d.setHours(0, 0, 0, 0);
+    // Get day of week: 0=Sunday, 1=Monday, ..., 6=Saturday
+    // Convert to ISO: 0=Monday, 1=Tuesday, ..., 6=Sunday
+    const dayOfWeek = d.getDay();
+    const isoDayOfWeek = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Sunday (0) -> 6, Monday (1) -> 0, etc.
+    // Go back to Monday
+    d.setDate(d.getDate() - isoDayOfWeek);
     return d;
   }
   function addDays(date, days) {

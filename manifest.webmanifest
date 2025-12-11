@@ -4,6 +4,8 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
+  "orientation": "any",
   "background_color": "#0f1220",
   "theme_color": "#171a2b",
   "description": "Backlog and weekly task planner with drag-and-drop and offline support.",

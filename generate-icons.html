@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generera PNG-ikoner</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #0f1220;
+      color: #e6e9f0;
+    }
+    button {
+      background: #7aa2f7;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    button:hover {
+      background: #6a92e7;
+    }
+    .info {
+      background: #171a2b;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 1px solid #2a2f45;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generera PNG-ikoner för PWA</h1>
+  <div class="info">
+    <p>Detta verktyg genererar PNG-ikoner från din SVG-fil. Klicka på knapparna nedan för att ladda ner ikonerna i rätt storlekar.</p>
+    <p><strong>Viktigt:</strong> Spara filerna i mappen <code>icons/</code> med namnen <code>icon-192.png</code> och <code>icon-512.png</code></p>
+  </div>
+  
+  <div>
+    <button onclick="generateIcon(192)">Generera 192x192</button>
+    <button onclick="generateIcon(512)">Generera 512x512</button>
+  </div>
+
+  <canvas id="canvas" style="display: none;"></canvas>
+
+  <script>
+    async function generateIcon(size) {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+
+      try {
+        // Ladda SVG-filen
+        const response = await fetch('icons/icon.svg');
+        const svgText = await response.text();
+        
+        // Skapa en bild från SVG
+        const img = new Image();
+        const blob = new Blob([svgText], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0, size, size);
+          URL.revokeObjectURL(url);
+          
+          // Konvertera till PNG och ladda ner
+          canvas.toBlob(function(blob) {
+            const downloadUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `icon-${size}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+            alert(`Ikon ${size}x${size} har laddats ner! Spara den som icons/icon-${size}.png`);
+          }, 'image/png');
+        };
+        
+        img.onerror = function() {
+          alert('Kunde inte ladda SVG-filen. Kontrollera att icons/icon.svg finns.');
+          URL.revokeObjectURL(url);
+        };
+        
+        img.src = url;
+      } catch (error) {
+        alert('Fel: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
+

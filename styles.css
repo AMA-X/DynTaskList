@@ -83,9 +83,22 @@ button:hover { border-color: var(--accent); }
   padding: 12px;
 }
 .week { background: transparent; border: 0; }
-.backlog { display: flex; flex-direction: column; position: relative; }
+.backlog { 
+  display: flex; 
+  flex-direction: column; 
+  position: relative;
+  padding-top: 16px;
+}
 
-.backlog h2 { margin: 4px 0 12px; font-size: 16px; }
+.backlog h2 { 
+  margin: 0 0 12px 0; 
+  font-size: 16px;
+  position: sticky;
+  top: 0;
+  background: rgba(23, 26, 43, 0.95);
+  z-index: 1;
+  padding-bottom: 8px;
+}
 
 .add-task-container {
   background: rgba(15, 18, 32, 0.5);
@@ -110,16 +123,23 @@ button:hover { border-color: var(--accent); }
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 100px;
   gap: 12px;
   align-items: end;
 }
 
-.task-title-group,
+.task-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
 .priority-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .field-label {
@@ -142,6 +162,7 @@ button:hover { border-color: var(--accent); }
   padding-top: 16px;
   scroll-padding-top: 16px;
   scroll-snap-type: y mandatory;
+  margin-top: 16px;
 }
 
 .weeks::-webkit-scrollbar {
@@ -174,7 +195,7 @@ button:hover { border-color: var(--accent); }
   padding: 6px 4px; 
   color: var(--muted);
   position: sticky;
-  top: 0;
+  top: 80px;
   background: rgba(15, 18, 32, 0.95);
   z-index: 1;
   margin-bottom: 4px;

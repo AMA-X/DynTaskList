@@ -69,7 +69,7 @@ button:hover { border-color: var(--accent); }
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 8px;
-  padding: 8px 16px 16px 16px;
+  padding: 4px 16px 16px 16px;
   height: calc(100vh - 80px);
   align-items: start;
   margin-top: 80px;
@@ -92,7 +92,7 @@ button:hover { border-color: var(--accent); }
 }
 
 .backlog h2 { 
-  margin: 4px 0 12px 0; 
+  margin: 0 0 8px 0; 
   font-size: 16px;
 }
 
@@ -193,7 +193,7 @@ button:hover { border-color: var(--accent); }
   display: flex; 
   align-items: baseline; 
   gap: 8px; 
-  padding: 6px 4px; 
+  padding: 4px 4px; 
   color: var(--muted);
 }
 .week-row-head .w-title { color: var(--text); font-weight: 600; }

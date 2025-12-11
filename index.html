@@ -24,7 +24,28 @@
         <span id="weekDateRange" class="muted"></span>
       </div>
       <button id="nextWeekBtn" aria-label="Next week">⟩</button>
-      <input id="jumpToDate" type="date" title="Jump to date" />
+      <button id="jumpToDateBtn" type="button" title="Jump to date">📅</button>
+      <div id="datePicker" class="date-picker" style="display: none;">
+        <div class="date-picker-header">
+          <button id="datePickerPrevMonth" type="button">‹</button>
+          <span id="datePickerMonthYear"></span>
+          <button id="datePickerNextMonth" type="button">›</button>
+        </div>
+        <div class="date-picker-weekdays">
+          <div>Mo</div>
+          <div>Tu</div>
+          <div>We</div>
+          <div>Th</div>
+          <div>Fr</div>
+          <div>Sa</div>
+          <div>Su</div>
+        </div>
+        <div id="datePickerDays" class="date-picker-days"></div>
+        <div class="date-picker-footer">
+          <button id="datePickerToday" type="button">Today</button>
+          <button id="datePickerClear" type="button">Clear</button>
+        </div>
+      </div>
     </div>
   </header>
 

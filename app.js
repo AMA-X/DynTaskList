@@ -87,7 +87,14 @@
   const backlogListEl = byId('backlogList');
   const weekTitleEl = byId('weekTitle');
   const weekDateRangeEl = byId('weekDateRange');
-  const jumpToDateEl = byId('jumpToDate');
+  const jumpToDateBtn = byId('jumpToDateBtn');
+  const datePickerEl = byId('datePicker');
+  const datePickerDaysEl = byId('datePickerDays');
+  const datePickerMonthYearEl = byId('datePickerMonthYear');
+  const datePickerPrevMonthBtn = byId('datePickerPrevMonth');
+  const datePickerNextMonthBtn = byId('datePickerNextMonth');
+  const datePickerTodayBtn = byId('datePickerToday');
+  const datePickerClearBtn = byId('datePickerClear');
 
   let currentWeekStart = startOfISOWeek(new Date());
   let isInitialScroll = true;

@@ -37,7 +37,8 @@ Om du vill att appen ska vara tillgänglig online:
 2. Settings → Pages
 3. Välj branch `main` och folder `/ (root)`
 4. Spara
-5. Appen kommer vara tillgänglig på: `https://ama-x.github.io/DynTaskList`
+5. Appen kommer vara tillgänglig på: `https://ama-x.github.io/DynTaskList` eller `https://ama-x.github.com/DynTaskList`
+   - Om du har en anpassad domän konfigurerad, använd den istället
 
 ## Generera ikoner
 

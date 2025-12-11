@@ -10,7 +10,8 @@ PWAs kräver HTTPS för att kunna installeras (utom localhost). Här är två en
    - Folder: `/ (root)`
 3. Klicka "Save"
 4. Vänta 1-2 minuter
-5. Öppna: `https://ama-x.github.io/DynTaskList` på telefonen
+5. Öppna på telefonen: `https://ama-x.github.io/DynTaskList` eller `https://ama-x.github.com/DynTaskList`
+   - Om du har en anpassad domän konfigurerad, använd den istället
 6. Nu ska "Installera app" visas!
 
 ## Alternativ 2: Lokal HTTPS med mkcert (Avancerat)

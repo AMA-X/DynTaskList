@@ -245,6 +245,11 @@ button:hover { border-color: var(--accent); }
   min-height: 160px;
   height: 100%;
 }
+
+.day-col.today {
+  border: 2px solid #4ade80;
+  border-style: solid;
+}
 .day-head {
   display: flex;
   justify-content: space-between;

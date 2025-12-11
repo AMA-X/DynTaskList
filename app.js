@@ -371,6 +371,15 @@
     });
 
     ensureDnD(backlogListEl);
+    
+    // Update current week when scrolling
+    let scrollTimeout;
+    weeksContainerEl.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        updateCurrentWeekFromScroll();
+      }, 50);
+    });
   }
 
   // Init

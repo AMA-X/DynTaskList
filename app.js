@@ -89,9 +89,8 @@
 
   function renderWeekHeader() {
     const first = currentWeekStart;
-    const last = addDays(addWeeks(first, 3), 6);
+    const last = addDays(first, 6); // Sunday of the same week (Monday + 6 days)
     const wStart = getISOWeek(first);
-    const wEnd = getISOWeek(addWeeks(first, 3));
     weekTitleEl.textContent = `Week ${wStart}`;
     const fmt = (d) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     weekDateRangeEl.textContent = `${fmt(first)} – ${fmt(last)}`;
@@ -190,11 +189,23 @@
     setTimeout(() => {
       const currentWeekRow = weeksContainerEl.children[weeksBack];
       if (currentWeekRow) {
+        // Temporarily disable scroll updates during initial scroll
+        let scrollListenerActive = false;
+        const originalScrollHandler = weeksContainerEl.onscroll;
+        
+        // Disable scroll listener temporarily
+        weeksContainerEl.removeEventListener('scroll', weeksContainerEl._scrollHandler);
+        
         currentWeekRow.scrollIntoView({ behavior: 'auto', block: 'start' });
-        // Update header after scroll is complete
+        
+        // Re-enable scroll listener after scroll completes
         setTimeout(() => {
+          if (weeksContainerEl._scrollHandler) {
+            weeksContainerEl.addEventListener('scroll', weeksContainerEl._scrollHandler);
+          }
+          // Update header once after initial scroll
           updateCurrentWeekFromScroll();
-        }, 150);
+        }, 250);
       }
     }, 100);
   }

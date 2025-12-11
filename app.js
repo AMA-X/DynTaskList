@@ -401,12 +401,14 @@
     
     // Update current week when scrolling
     let scrollTimeout;
-    weeksContainerEl.addEventListener('scroll', () => {
+    const scrollHandler = () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         updateCurrentWeekFromScroll();
-      }, 50);
-    });
+      }, 150);
+    };
+    weeksContainerEl._scrollHandler = scrollHandler;
+    weeksContainerEl.addEventListener('scroll', scrollHandler);
   }
 
   // Init

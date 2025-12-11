@@ -216,39 +216,71 @@
     
     const containerRect = container.getBoundingClientRect();
     const containerTop = containerRect.top;
+    const scrollTop = container.scrollTop;
     
     // Find the week that is actually visible at the top
-    // Strategy: Find the first week whose top edge is at or below container top
-    // and is actually visible (its bottom is below container top)
+    // With scroll-snap, the snapped week should have its offsetTop very close to scrollTop
+    // Strategy: Find the week whose offsetTop is closest to scrollTop
+    // but also verify it's the one that's visually at the top
     
     let topWeek = null;
-    let closestDistance = Infinity;
+    let bestCandidate = null;
+    let minScrollDistance = Infinity;
+    let minVisualDistance = Infinity;
     
-    // Find the week whose top edge is closest to container top
-    // and is actually visible (top at or below container top, bottom below container top)
+    // First pass: Find weeks that are close to scrollTop (snapped weeks)
     for (const weekRow of container.children) {
-      const rect = weekRow.getBoundingClientRect();
-      const weekTop = rect.top;
-      const weekBottom = rect.bottom;
+      const weekOffsetTop = weekRow.offsetTop;
+      const scrollDistance = Math.abs(scrollTop - weekOffsetTop);
       
-      // The week at the top should have:
-      // - Its top edge at or below container top (visible)
-      // - Its bottom edge below container top (actually visible, not just a tiny bit)
-      if (weekTop >= containerTop - 2 && weekBottom > containerTop + 10) {
-        const distance = weekTop - containerTop;
-        // Find the week with the smallest positive distance (closest to top)
-        if (distance >= -2 && distance < closestDistance) {
-          closestDistance = distance;
-          topWeek = weekRow;
+      if (scrollDistance < 100) {
+        const rect = weekRow.getBoundingClientRect();
+        const visualDistance = Math.abs(rect.top - containerTop);
+        
+        // Track the week with smallest scroll distance
+        if (scrollDistance < minScrollDistance) {
+          minScrollDistance = scrollDistance;
+          bestCandidate = weekRow;
         }
       }
     }
     
-    // If no week found, find the first week that is visible
+    // Second pass: Among weeks close to scrollTop, find the one visually at the top
+    if (bestCandidate) {
+      const candidateOffsetTop = bestCandidate.offsetTop;
+      const candidateScrollDistance = Math.abs(scrollTop - candidateOffsetTop);
+      
+      // Look for weeks with similar scroll distance but better visual position
+      for (const weekRow of container.children) {
+        const weekOffsetTop = weekRow.offsetTop;
+        const scrollDistance = Math.abs(scrollTop - weekOffsetTop);
+        const rect = weekRow.getBoundingClientRect();
+        const weekTop = rect.top;
+        
+        // Consider weeks that are close to the best candidate's scroll position
+        if (Math.abs(scrollDistance - candidateScrollDistance) < 20) {
+          // And whose visual top is at or just below container top
+          if (weekTop >= containerTop - 5 && weekTop <= containerTop + 50) {
+            const visualDistance = Math.abs(weekTop - containerTop);
+            if (visualDistance < minVisualDistance) {
+              minVisualDistance = visualDistance;
+              topWeek = weekRow;
+            }
+          }
+        }
+      }
+    }
+    
+    // If we found a visually better match, use it; otherwise use the scroll-based candidate
+    if (!topWeek && bestCandidate) {
+      topWeek = bestCandidate;
+    }
+    
+    // Final fallback: find the first week that is visually at the top
     if (!topWeek) {
       for (const weekRow of container.children) {
         const rect = weekRow.getBoundingClientRect();
-        if (rect.top <= containerTop + 30 && rect.bottom > containerTop + 10) {
+        if (rect.top >= containerTop - 5 && rect.top <= containerTop + 50 && rect.bottom > containerTop) {
           topWeek = weekRow;
           break;
         }

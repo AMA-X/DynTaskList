@@ -73,6 +73,30 @@
 
   <script src="app.js"></script>
   <script>
+    // Dölj adressfältet i standalone-läge
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      // Appen körs i standalone-läge
+      document.documentElement.classList.add('standalone');
+      
+      // För Android: försök dölja adressfältet genom att scrolla
+      let lastScrollTop = 0;
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+          // Scrollar nedåt - dölj adressfältet
+          window.scrollTo(0, 1);
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      }, false);
+      
+      // Försök scrolla lite för att trigga döljning av adressfältet
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+        setTimeout(() => window.scrollTo(0, 0), 10);
+      }, 100);
+    }
+    
+    // Service Worker registrering
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('service-worker.js')

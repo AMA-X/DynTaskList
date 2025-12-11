@@ -10,12 +10,12 @@
   </defs>
   <rect x="16" y="16" width="480" height="480" rx="96" fill="url(#g)" stroke="#2a2f45" stroke-width="6"/>
 
-  <!-- Emoji -->
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="220" filter="url(#s)">😅</text>
+  <!-- Emoji - centrerad och större -->
+  <text x="256" y="240" text-anchor="middle" dominant-baseline="middle" font-size="260" filter="url(#s)">😅</text>
 
-  <!-- Title overlay -->
-  <rect x="96" y="356" width="320" height="80" rx="16" fill="rgba(0,0,0,0.35)" />
-  <text x="50%" y="412" text-anchor="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="80" fill="#e6e9f0" font-weight="700" letter-spacing="1">ToDo</text>
+  <!-- Title overlay - centrerad under emojin -->
+  <rect x="96" y="300" width="320" height="90" rx="18" fill="rgba(0,0,0,0.4)" />
+  <text x="256" y="360" text-anchor="middle" dominant-baseline="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="95" fill="#e6e9f0" font-weight="700" letter-spacing="2">ToDo</text>
 </svg>
 
 

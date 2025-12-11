@@ -15,12 +15,12 @@
   <g transform="translate(51.2, 51.2)">
     <rect x="0" y="0" width="409.6" height="409.6" rx="76.8" fill="url(#g)" stroke="#2a2f45" stroke-width="4.8"/>
     
-    <!-- Emoji - centrerad i safe zone -->
-    <text x="50%" y="45%" text-anchor="middle" dominant-baseline="middle" font-size="176" filter="url(#s)">😅</text>
+    <!-- Emoji - centrerad i safe zone, större -->
+    <text x="204.8" y="192" text-anchor="middle" dominant-baseline="middle" font-size="208" filter="url(#s)">😅</text>
     
-    <!-- Title overlay - i safe zone -->
-    <rect x="76.8" y="284.8" width="256" height="64" rx="12.8" fill="rgba(0,0,0,0.35)" />
-    <text x="50%" y="332.8" text-anchor="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="64" fill="#e6e9f0" font-weight="700" letter-spacing="0.8">ToDo</text>
+    <!-- Title overlay - centrerad i safe zone -->
+    <rect x="76.8" y="240" width="256" height="72" rx="14.4" fill="rgba(0,0,0,0.4)" />
+    <text x="204.8" y="288" text-anchor="middle" dominant-baseline="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="76" fill="#e6e9f0" font-weight="700" letter-spacing="1.6">ToDo</text>
   </g>
 </svg>
 

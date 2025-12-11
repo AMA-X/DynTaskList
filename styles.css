@@ -87,9 +87,40 @@ button:hover { border-color: var(--accent); }
 
 .backlog h2 { margin: 4px 0 12px; font-size: 16px; }
 
-#addTaskForm { display: grid; grid-template-columns: minmax(0,1fr) auto 80px; gap: 8px; margin-bottom: 12px; }
+.add-task-container {
+  background: rgba(15, 18, 32, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.add-task-container h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.add-task-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priority-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.priority-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
 #addTaskForm button { width: 100%; }
-#taskStatusInput { width: calc(8.5ch + 2.6em); min-width: calc(8.5ch + 2.6em); white-space: nowrap; }
 
 .task-list { display: flex; flex-direction: column; gap: 8px; min-height: 80px; flex: 1; }
 
@@ -168,7 +199,6 @@ button:hover { border-color: var(--accent); }
 }
 @media (max-width: 640px) {
   .week-grid { grid-template-columns: 1fr; }
-  #addTaskForm { grid-template-columns: 1fr; }
 }
 
 

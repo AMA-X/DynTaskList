@@ -200,19 +200,33 @@
     const containerRect = container.getBoundingClientRect();
     const containerTop = containerRect.top;
     
-    // Find the week that is closest to the top of the container
+    // Find the week that is at or closest to the top of the container
     let topWeek = null;
     let minDistance = Infinity;
     
     for (const weekRow of container.children) {
       const rect = weekRow.getBoundingClientRect();
       const weekTop = rect.top;
-      const distance = Math.abs(weekTop - containerTop);
+      const weekBottom = rect.bottom;
       
-      // Check if this week is visible and closest to the top
-      if (weekTop <= containerTop + 100 && distance < minDistance) {
-        minDistance = distance;
-        topWeek = weekRow;
+      // Check if this week is visible (at least partially at the top)
+      if (weekTop <= containerTop + 20 && weekBottom > containerTop) {
+        const distance = Math.abs(weekTop - containerTop);
+        if (distance < minDistance) {
+          minDistance = distance;
+          topWeek = weekRow;
+        }
+      }
+    }
+    
+    // If no week found at top, find the first week that is visible
+    if (!topWeek) {
+      for (const weekRow of container.children) {
+        const rect = weekRow.getBoundingClientRect();
+        if (rect.top <= containerTop + 50 && rect.bottom > containerTop) {
+          topWeek = weekRow;
+          break;
+        }
       }
     }
     

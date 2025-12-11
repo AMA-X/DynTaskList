@@ -69,7 +69,7 @@ button:hover { border-color: var(--accent); }
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 8px;
-  padding: 16px;
+  padding: 8px 16px 16px 16px;
   height: calc(100vh - 80px);
   align-items: start;
   margin-top: 80px;
@@ -153,6 +153,25 @@ button:hover { border-color: var(--accent); }
   min-height: 80px; 
   flex: 1;
   overflow-y: auto;
+  padding-right: 8px;
+}
+
+.task-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: rgba(42, 47, 69, 0.3);
+  border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 .weeks {

@@ -219,6 +219,7 @@ button:hover { border-color: var(--accent); }
   flex-direction: column;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  scroll-margin-top: 0;
 }
 .week-row-head { 
   display: flex; 

@@ -179,6 +179,8 @@
 
       const grid = document.createElement('div');
       grid.className = 'week-grid';
+      // Create days from Monday (0) to Sunday (6)
+      // weekStart is already Monday from startOfISOWeek
       for (let i = 0; i < 7; i++) {
         const d = addDays(weekStart, i);
         grid.appendChild(createDayColumn(d));
@@ -222,41 +224,34 @@
     const containerTop = containerRect.top;
     
     // Find the week that is actually visible at the top
-    // Strategy: Read the week number directly from the visible week's header
-    // This is more reliable than trying to calculate from scroll position
+    // Use Intersection Observer approach: find the week whose top edge
+    // is at or just below the container top
     
     let topWeek = null;
-    let closestDistance = Infinity;
+    let minDistance = Infinity;
     
-    // Find the week whose top edge is closest to container top
-    // and is actually visible (top at or below container top, with enough visible)
+    // Find the first week whose top edge is at or below container top
+    // This should be the snapped week
     for (const weekRow of container.children) {
       const rect = weekRow.getBoundingClientRect();
       const weekTop = rect.top;
-      const weekBottom = rect.bottom;
-      const weekHeight = rect.height;
       
-      // The week at the top should have:
-      // - Its top edge at or just above container top (within 10px)
-      // - A significant portion visible (at least 50px or 20% of height)
-      const visibleHeight = Math.min(weekBottom - containerTop, weekHeight);
-      const isSignificantlyVisible = visibleHeight > Math.max(50, weekHeight * 0.2);
-      
-      if (weekTop <= containerTop + 10 && isSignificantlyVisible) {
+      // The week at the top should have its top edge at or just below container top
+      if (weekTop >= containerTop - 5 && weekTop <= containerTop + 5) {
         const distance = Math.abs(weekTop - containerTop);
-        // Find the week with the smallest distance (closest to top)
-        if (distance < closestDistance) {
-          closestDistance = distance;
+        if (distance < minDistance) {
+          minDistance = distance;
           topWeek = weekRow;
         }
       }
     }
     
-    // If no week found, find the first week that is visible
+    // If no week found with top at container top, find the first visible one
     if (!topWeek) {
       for (const weekRow of container.children) {
         const rect = weekRow.getBoundingClientRect();
-        if (rect.top <= containerTop + 20 && rect.bottom > containerTop + 50) {
+        // Find the first week that is actually visible at the top
+        if (rect.top >= containerTop - 10 && rect.top <= containerTop + 10 && rect.bottom > containerTop) {
           topWeek = weekRow;
           break;
         }
@@ -264,35 +259,12 @@
     }
     
     if (topWeek) {
-      // Read the week number directly from the week's header text
-      const weekHeader = topWeek.querySelector('.week-row-head');
-      if (weekHeader) {
-        const weekTitle = weekHeader.querySelector('.w-title');
-        if (weekTitle) {
-          // Extract week number from text like "Week 52"
-          const weekMatch = weekTitle.textContent.match(/Week\s+(\d+)/);
-          if (weekMatch) {
-            const weekNum = parseInt(weekMatch[1], 10);
-            // Get the week start date from the data attribute
-            const weekStartStr = topWeek.getAttribute('data-week-start');
-            if (weekStartStr) {
-              const newWeekStart = parseDate(weekStartStr);
-              if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-                currentWeekStart = newWeekStart;
-                renderWeekHeader();
-              }
-            }
-          }
-        }
-      } else {
-        // Fallback to data attribute method
-        const weekStartStr = topWeek.getAttribute('data-week-start');
-        if (weekStartStr) {
-          const newWeekStart = parseDate(weekStartStr);
-          if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-            currentWeekStart = newWeekStart;
-            renderWeekHeader();
-          }
+      const weekStartStr = topWeek.getAttribute('data-week-start');
+      if (weekStartStr) {
+        const newWeekStart = parseDate(weekStartStr);
+        if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+          currentWeekStart = newWeekStart;
+          renderWeekHeader();
         }
       }
     }

@@ -34,16 +34,21 @@
       <div class="add-task-container">
         <h3>Add new task</h3>
         <form id="addTaskForm" autocomplete="off">
-          <input id="taskTitleInput" type="text" placeholder="Task title" required />
-          <div class="priority-group">
-            <label for="taskPriorityInput" class="priority-label">Priority</label>
-            <select id="taskPriorityInput" title="Priority (1 highest)">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
+          <div class="form-row">
+            <div class="task-title-group">
+              <label for="taskTitleInput" class="field-label">Task title</label>
+              <input id="taskTitleInput" type="text" placeholder="Task title" required />
+            </div>
+            <div class="priority-group">
+              <label for="taskPriorityInput" class="field-label">Priority</label>
+              <select id="taskPriorityInput" title="Priority (1 highest)">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
           </div>
           <button type="submit">Add</button>
         </form>

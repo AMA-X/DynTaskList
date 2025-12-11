@@ -108,13 +108,21 @@ button:hover { border-color: var(--accent); }
   gap: 12px;
 }
 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.task-title-group,
 .priority-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.priority-label {
+.field-label {
   font-size: 12px;
   color: var(--muted);
   font-weight: 500;

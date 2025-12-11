@@ -86,6 +86,7 @@
   const jumpToDateEl = byId('jumpToDate');
 
   let currentWeekStart = startOfISOWeek(new Date());
+  let isInitialScroll = true;
 
   function renderWeekHeader() {
     const first = currentWeekStart;
@@ -202,7 +203,9 @@
           if (weeksContainerEl._scrollHandler) {
             weeksContainerEl.addEventListener('scroll', weeksContainerEl._scrollHandler);
           }
-        }, 250);
+          // Mark initial scroll as complete
+          isInitialScroll = false;
+        }, 300);
       }
     }, 100);
   }
@@ -412,6 +415,9 @@
     // Update current week when scrolling
     let scrollTimeout;
     const scrollHandler = () => {
+      // Don't update during initial scroll
+      if (isInitialScroll) return;
+      
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         updateCurrentWeekFromScroll();

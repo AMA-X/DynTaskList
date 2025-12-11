@@ -197,35 +197,36 @@
     const container = weeksContainerEl;
     if (!container || container.children.length === 0) return;
     
-    const scrollTop = container.scrollTop;
+    const containerRect = container.getBoundingClientRect();
+    const containerTop = containerRect.top;
     
-    // Find the week whose top edge is at or just above the scroll position
-    // With snap scrolling, the week at the top should have its offsetTop close to scrollTop
+    // Find the week that is visually at the top of the container
+    // Use getBoundingClientRect to get the actual visual position
     let topWeek = null;
-    let minDistance = Infinity;
+    let closestToTop = Infinity;
     
     for (const weekRow of container.children) {
-      const weekOffsetTop = weekRow.offsetTop;
-      const distance = Math.abs(scrollTop - weekOffsetTop);
+      const rect = weekRow.getBoundingClientRect();
+      const weekTop = rect.top;
       
-      // Find the week with the smallest distance to scroll position
-      // Prefer weeks that are at or above the scroll position
-      if (weekOffsetTop <= scrollTop + 5) {
-        if (distance < minDistance) {
-          minDistance = distance;
+      // Check if this week is visible and at or near the top
+      // We want the week whose top edge is closest to the container top
+      if (weekTop >= containerTop - 50 && weekTop <= containerTop + 100) {
+        const distance = Math.abs(weekTop - containerTop);
+        if (distance < closestToTop) {
+          closestToTop = distance;
           topWeek = weekRow;
         }
       }
     }
     
-    // If no week found above scroll position, find the closest one
-    if (!topWeek) {
+    // If no week found in the range, find the first visible week
+    if (!topWeek && container.children.length > 0) {
       for (const weekRow of container.children) {
-        const weekOffsetTop = weekRow.offsetTop;
-        const distance = Math.abs(scrollTop - weekOffsetTop);
-        if (distance < minDistance) {
-          minDistance = distance;
+        const rect = weekRow.getBoundingClientRect();
+        if (rect.top <= containerTop + 200 && rect.bottom > containerTop) {
           topWeek = weekRow;
+          break;
         }
       }
     }

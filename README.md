@@ -24,8 +24,10 @@ För att öppna appen på telefonen behöver den serveras via en webbserver (PWA
    - (Om IP-adressen är annorlunda, kontrollera med `ipconfig` på Windows)
 
 3. **Installera på hemskärmen:**
+   - **VIKTIGT:** PWAs kräver HTTPS för installation! HTTP fungerar inte.
+   - **Lösning:** Använd GitHub Pages (se nedan) eller sätt upp lokal HTTPS
    - **iOS Safari:** Klicka på delningsknappen (fyrkant med pil) → "Lägg till på hemskärmen"
-   - **Android Chrome:** Klicka på menyn (tre prickar) → "Lägg till på hemskärmen" eller "Installera app"
+   - **Android Chrome/Brave:** Efter att ha öppnat via HTTPS, leta efter "Installera app" i menyn eller en banner längst ner
 
 ## Alternativ: GitHub Pages
 

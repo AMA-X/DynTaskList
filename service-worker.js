@@ -22,9 +22,13 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : undefined)))).then(
-      () => self.clients.claim()
-    )
+    caches.keys().then((keys) => {
+      return Promise.all(keys.map((k) => {
+        if (k !== CACHE_NAME) {
+          return caches.delete(k);
+        }
+      }));
+    }).then(() => self.clients.claim())
   );
 });
 

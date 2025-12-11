@@ -5,7 +5,8 @@
   "scripts": {
     "generate-icons": "node generate-icons.js",
     "start": "npx http-server -p 8080 -c-1",
-    "serve": "npx http-server -p 8080 -c-1"
+    "serve": "npx http-server -p 8080 -c-1",
+    "serve-https": "npx http-server -p 8080 -S -C cert.pem -K key.pem -c-1"
   },
   "devDependencies": {
     "puppeteer": "^21.5.0"

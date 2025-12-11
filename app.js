@@ -199,40 +199,42 @@
     
     const scrollTop = container.scrollTop;
     
-    // With scroll-snap, the week at the top should have its offsetTop
-    // closest to the scrollTop position
-    // Find the week whose offsetTop is closest to scrollTop
+    // With scroll-snap, find the week that is currently at the top
+    // The snapped week should have its offsetTop very close to scrollTop
+    // Strategy: Find the week whose top edge is at or just above scrollTop
+    // and is the closest to scrollTop
+    
     let topWeek = null;
-    let minDistance = Infinity;
+    let bestWeek = null;
+    let minDistanceAbove = Infinity;
+    let minDistanceOverall = Infinity;
     
     for (const weekRow of container.children) {
       const weekOffsetTop = weekRow.offsetTop;
+      const weekHeight = weekRow.offsetHeight;
       const distance = Math.abs(scrollTop - weekOffsetTop);
       
-      // Find the week with the smallest distance to scroll position
-      // Prefer weeks that are at or above the scroll position (snapped week)
-      if (weekOffsetTop <= scrollTop + 5) {
-        if (distance < minDistance) {
-          minDistance = distance;
+      // Check if this week is the one snapped at the top
+      // (its top edge should be at or very close to scrollTop)
+      if (weekOffsetTop <= scrollTop + 2 && weekOffsetTop >= scrollTop - weekHeight) {
+        if (distance < minDistanceAbove) {
+          minDistanceAbove = distance;
           topWeek = weekRow;
         }
       }
-    }
-    
-    // If no week found above scroll position, find the closest one overall
-    if (!topWeek) {
-      for (const weekRow of container.children) {
-        const weekOffsetTop = weekRow.offsetTop;
-        const distance = Math.abs(scrollTop - weekOffsetTop);
-        if (distance < minDistance) {
-          minDistance = distance;
-          topWeek = weekRow;
-        }
+      
+      // Also track the overall closest week
+      if (distance < minDistanceOverall) {
+        minDistanceOverall = distance;
+        bestWeek = weekRow;
       }
     }
     
-    if (topWeek) {
-      const weekStartStr = topWeek.getAttribute('data-week-start');
+    // Use the snapped week if found, otherwise use the closest overall
+    const selectedWeek = topWeek || bestWeek;
+    
+    if (selectedWeek) {
+      const weekStartStr = selectedWeek.getAttribute('data-week-start');
       if (weekStartStr) {
         const newWeekStart = parseDate(weekStartStr);
         if (newWeekStart.getTime() !== currentWeekStart.getTime()) {

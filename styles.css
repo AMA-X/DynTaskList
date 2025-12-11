@@ -68,7 +68,7 @@ button:hover { border-color: var(--accent); }
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr;
-  gap: 16px;
+  gap: 8px;
   padding: 16px;
   height: calc(100vh - 80px);
   align-items: start;
@@ -162,6 +162,8 @@ button:hover { border-color: var(--accent); }
   overflow-y: auto;
   height: 100%;
   padding-right: 8px;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 0;
 }
 
 .weeks::-webkit-scrollbar {
@@ -184,6 +186,8 @@ button:hover { border-color: var(--accent); }
 .week { 
   display: flex; 
   flex-direction: column;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 .week-row-head { 
   display: flex; 
